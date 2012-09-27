@@ -19,7 +19,6 @@ shared_examples_for 'a backend' do
 
   before(:all) do
     Qu.backend = described_class.new
-    p Qu.backend
   end
 
   before do
