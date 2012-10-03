@@ -146,14 +146,14 @@ module Qu
           :query => { :_id => payload.id },
           :update => { '$set' => { :state => 'die' }})
         clear_worker payload
-        profile(doc, :runtime => Time.now - doc['started_at'], :failed => true, :error => { :message => error.message, :backtrace => error.backtrace}) if doc.present?
+        profile(doc, :runtime => Time.now - doc['started_at'], :failed => true, :error => { :message => error.message, :backtrace => error.backtrace}) unless doc.nil?
       end
 
       def completed(payload)
         doc = jobs(payload.queue).find_and_modify(
           :query => { :_id => payload.id },
           :remove => true)
-        profile(doc, :runtime => Time.now - doc['started_at'], :failed => false) if doc.present?
+        profile(doc, :runtime => Time.now - doc['started_at'], :failed => false) unless doc.nil?
       end
 
       def profile doc, data={}
